@@ -113,6 +113,16 @@
       box-shadow: 0 16px 35px rgba(126, 42, 76, 0.25);
       transform: rotate(9deg);
       animation: photoFloat 5s ease-in-out infinite;
+      visibility: hidden;
+      opacity: 0;
+      animation-play-state: paused;
+      transition: opacity 0.8s ease;
+    }
+
+    .floating-photo.visible {
+      visibility: visible;
+      opacity: 1;
+      animation-play-state: running;
     }
 
     .floating-photo img {
@@ -440,6 +450,9 @@
 
       surprise.textContent = "Yêu em mãi mãi. 💕";
       mainButton.classList.add("fade-out");
+      document.querySelectorAll(".floating-photo").forEach((photo) => {
+        photo.classList.add("visible");
+      });
 
       setTimeout(() => {
         mainButton.hidden = true;
