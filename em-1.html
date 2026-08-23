@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For My Love</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      font-family: Georgia, "TH Cartoon 9", serif;
+      background:
+        radial-gradient(circle at 20% 20%, #ffd6e7 0 8%, transparent 25%),
+        radial-gradient(circle at 80% 80%, #ffc9d9 0 8%, transparent 25%),
+        linear-gradient(135deg, #fff4f7, #ffe1eb);
+      color: #562235;
+    }
+
+    .tab-button {
+      display: block;
+      border: 0;
+      border-radius: 999px;
+      padding: 9px 16px;
+      color: #a52c56;
+      background: transparent;
+      font: inherit;
+      font-size: 0.95rem;
+      cursor: pointer;
+      box-shadow: none;
+      text-decoration: none;
+    }
+
+    .tab-button.active,
+    .tab-button:hover {
+      color: white;
+      background: #d83f72;
+      transform: none;
+    }
+
+    .button-stack {
+      position: relative;
+      width: max-content;
+      margin: 0 auto;
+      padding-bottom: 34px;
+    }
+
+    .main-button {
+      position: relative;
+      z-index: 2;
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .main-button.fade-out {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.96);
+      pointer-events: none;
+    }
+
+    .main-message-link {
+      position: absolute;
+      top: calc(100% - 46px);
+      left: 50%;
+      z-index: 1;
+      width: max-content;
+      margin: 0;
+      color: white;
+      background: #ef8eac;
+      transform: translateX(-50%);
+    }
+
+    .main-message-link:hover {
+      color: white;
+      background: #d96f91;
+      transform: translateX(-50%);
+    }
+
+    .main-message-link[hidden] {
+      display: none;
+    }
+
+    .card {
+      position: relative;
+      z-index: 2;
+      width: min(90%, 560px);
+      padding: 48px 34px;
+      text-align: center;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 20px 60px rgba(126, 42, 76, 0.2);
+      backdrop-filter: blur(12px);
+      animation: appear 1s ease-out;
+    }
+
+    .floating-photo {
+      position: fixed;
+      z-index: 1;
+      top: 8vh;
+      right: 8vw;
+      width: clamp(120px, 20vw, 190px);
+      aspect-ratio: 3 / 4;
+      padding: 8px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.75);
+      box-shadow: 0 16px 35px rgba(126, 42, 76, 0.25);
+      transform: rotate(9deg);
+      animation: photoFloat 5s ease-in-out infinite;
+    }
+
+    .floating-photo img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .floating-text {
+      position: fixed;
+      z-index: 1;
+      color: rgba(197, 40, 93, 0.7);
+      font-size: clamp(1rem, 2.6vw, 1.4rem);
+      font-style: italic;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      pointer-events: none;
+      user-select: none;
+      visibility: hidden;
+      opacity: 0;
+      animation: none;
+    }
+
+    .floating-text.visible {
+      visibility: visible;
+      animation: textRise 4.5s ease-in-out infinite;
+    }
+
+    .floating-text:nth-of-type(3) {
+      top: 25vh;
+      left: 7vw;
+      transform: rotate(-12deg);
+    }
+
+    .floating-text:nth-of-type(4) {
+      right: 7vw;
+      bottom: 24vh;
+      transform: rotate(10deg);
+      animation-delay: -3s;
+    }
+
+    .floating-text:nth-of-type(5) {
+      bottom: 5vh;
+      left: 38vw;
+      transform: rotate(-5deg);
+      animation-delay: -1.5s;
+    }
+
+    .floating-text:nth-of-type(6) {
+      top: 11vh;
+      left: 35vw;
+      transform: rotate(5deg);
+      animation-delay: -4s;
+    }
+
+    .floating-text:nth-of-type(7) {
+      right: 28vw;
+      bottom: 8vh;
+      transform: rotate(-8deg);
+      animation-delay: -2s;
+    }
+
+    .floating-text:nth-of-type(8) {
+      top: 42vh;
+      right: 4vw;
+      transform: rotate(8deg);
+      animation-delay: -5s;
+    }
+
+    .floating-photo:nth-of-type(2) {
+      top: auto;
+      right: auto;
+      bottom: 8vh;
+      left: 8vw;
+      transform: rotate(-9deg);
+      animation-delay: -2.5s;
+    }
+
+    .floating-photo:nth-of-type(3) {
+      top: 10vh;
+      right: auto;
+      bottom: auto;
+      left: 9vw;
+      transform: rotate(-6deg);
+      animation-delay: -1.2s;
+    }
+
+    .heart {
+      font-size: 64px;
+      animation: heartbeat 1.4s infinite;
+    }
+
+    h1 {
+      margin: 12px 0;
+      font-size: clamp(2.3rem, 8vw, 4.5rem);
+      color: #c5285d;
+    }
+
+    .subtitle {
+      font-size: 1.25rem;
+      line-height: 1.7;
+    }
+
+    .message {
+      margin: 28px 0;
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 24px;
+      font: inherit;
+      font-weight: bold;
+      color: white;
+      background: #d83f72;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(216, 63, 114, 0.3);
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-3px) scale(1.03);
+      background: #b92859;
+    }
+
+    #surprise {
+      min-height: 32px;
+      margin-top: 24px;
+      font-size: 1.15rem;
+      font-weight: bold;
+      color: #b92859;
+    }
+
+    .floating-heart {
+      position: fixed;
+      bottom: -30px;
+      font-size: 50px;
+      pointer-events: none;
+      animation: float 5s linear forwards;
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes heartbeat {
+      0%, 100% {
+        transform: scale(1);
+      }
+      15% {
+        transform: scale(1.18);
+      }
+      30% {
+        transform: scale(1);
+      }
+      45% {
+        transform: scale(1.12);
+      }
+    }
+
+    @keyframes photoFloat {
+      0%, 100% {
+        transform: translateY(0) rotate(9deg);
+      }
+
+      50% {
+        transform: translateY(-18px) rotate(3deg);
+      }
+    }
+
+    @keyframes textFloat {
+      0%, 100% {
+        opacity: 0.55;
+        transform: translateY(0) rotate(-12deg);
+      }
+
+      50% {
+        opacity: 1;
+        transform: translateY(-12px) rotate(-7deg);
+      }
+    }
+
+    @keyframes textRise {
+      0% {
+        opacity: 0;
+        transform: translateY(24px) rotate(-12deg) scale(0.85);
+      }
+
+      18% {
+        opacity: 1;
+      }
+
+      72% {
+        opacity: 1;
+        transform: translateY(-40px) rotate(-4deg) scale(1.05);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(-40px) rotate(-4deg) scale(1.05);
+      }
+    }
+
+    @keyframes float {
+      from {
+        opacity: 0;
+        transform: translateY(0) rotate(0deg);
+      }
+      15% {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-110vh) rotate(360deg);
+      }
+    }
+
+    @media (max-width: 650px) {
+      .floating-photo {
+        top: 3vh;
+        right: 5vw;
+        width: 105px;
+        opacity: 0.85;
+      }
+
+      .floating-text {
+        font-size: 0.95rem;
+      }
+
+      .card {
+        margin-top: 70px;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+  <figure class="floating-photo" aria-label="A floating photo">
+    <img
+      src="https://cdn.discordapp.com/attachments/1532366098308272148/1540740279357800589/IMG_1250.jpg?ex=6a8b0db4&is=6a89bc34&hm=a20ce97054a4a6b1e3588bac1600ef0f8392fba2c28ee57ee19794bf0264c503"
+      alt="Ảnh 3.jpg"
+    />
+  </figure>
+
+  <figure class="floating-photo" aria-label="A second floating photo">
+    <img
+      src="https://cdn.discordapp.com/attachments/1532366098308272148/1540740202337796207/A6C89CAA-D488-4E95-B122-41609C8B624B.png?ex=6a8b0da1&is=6a89bc21&hm=437f3c8e5ae8fadbe8f1662c7c9d34fc33f58ecef98897d8c5736ed4b8e11604&"
+      alt="Ảnh 2.jpg"
+    />
+  </figure>
+
+  <figure class="floating-photo" aria-label="A third floating photo">
+    <img
+      src="https://cdn.discordapp.com/attachments/1532366098308272148/1540740201943670884/IMG_1249.jpg?ex=6a8b0da1&is=6a89bc21&hm=3564fe414c080aa81a1fd4f10bbf0db6c5a7d428320790b06bf369f414308716&"
+      alt="Ảnh 1.jpg"
+    />
+  </figure>
+
+  <span class="floating-text" aria-hidden="true">miss youuuu 💕</span>
+  <span class="floating-text" aria-hidden="true">yêu em  mãiii ✨</span>
+  <span class="floating-text" aria-hidden="true">love youuu 🌸</span>
+  <span class="floating-text" aria-hidden="true">thương em nhấtttt 💗</span>
+  <span class="floating-text" aria-hidden="true">nhớ em mỗi ngày 🌷</span>
+  <span class="floating-text" aria-hidden="true">mãi bên nhau nhaaa 💞</span>
+
+  <main class="card">
+    <div class="heart">💗</div>
+
+    <h1>For My Love</h1>
+
+    <p class="subtitle">
+      Em là cục zàng của anhhhh.
+    </p>
+
+    <p class="message">
+      Yêu em mãiii.
+    </p>
+
+    <div class="button-stack">
+      <button class="main-button" onclick="showSurprise()">
+        vo coi điii
+      </button>
+
+      <a
+        class="tab-button main-message-link"
+        href="intro.html"
+        target="_blank"
+        rel="noopener"
+        hidden
+      >
+        nhắn nhủ nèee
+      </a>
+    </div>
+
+    <p id="surprise"></p>
+  </main>
+
+  <script>
+    function showSurprise() {
+      const surprise = document.getElementById("surprise");
+      const mainButton = document.querySelector(".main-button");
+      const introButton = document.querySelector(".main-message-link");
+
+      surprise.textContent = "Yêu em mãi mãi. 💕";
+      mainButton.classList.add("fade-out");
+
+      setTimeout(() => {
+        mainButton.hidden = true;
+        introButton.hidden = false;
+      }, 900);
+
+      document.querySelectorAll(".floating-text").forEach((text) => {
+        text.classList.remove("visible");
+        void text.offsetWidth;
+        text.classList.add("visible");
+      });
+
+      for (let i = 0; i < 12; i++) {
+        createHeart();
+      }
+
+    }
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "floating-heart";
+      heart.textContent = ["💗", "💕", "💖", "🌸"][Math.floor(Math.random() * 4)];
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = 3 + Math.random() * 3 + "s";
+
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 6000);
+    }
+
+  </script>
+</body>
+</html>
