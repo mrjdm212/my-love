@@ -364,7 +364,7 @@
 <body>
   <audio id="background-music" loop preload="auto">
     <source
-      src="https://cdn.discordapp.com/attachments/1534053228315148308/1540941743413792898/0822.mp3?ex=6a8bc954&is=6a8a77d4&hm=b0815f938fb605044f764c553b58db394048bf35961b43946ee0e5e67736f505&"
+      src="https://cdn.discordapp.com/attachments/1534053228315148308/1540944370184888410/0823.mp3?ex=6a8bcbc7&is=6a8a7a47&hm=a5958dd1d136f26a68e854d5a8a80f4ceeb456f41679ee3b09424c21c0f3ffef&"
       type="audio/mpeg"
     />
   </audio>
@@ -436,8 +436,9 @@
       const introButton = document.querySelector(".main-message-link");
       const backgroundMusic = document.getElementById("background-music");
 
-      surprise.textContent = "Yêu em mãi mãi. 💕";
       backgroundMusic.play().catch(() => {});
+
+      surprise.textContent = "Yêu em mãi mãi. 💕";
       mainButton.classList.add("fade-out");
 
       setTimeout(() => {
