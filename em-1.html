@@ -362,6 +362,13 @@
 </head>
 
 <body>
+  <audio id="background-music" loop preload="auto">
+    <source
+      src="https://cdn.discordapp.com/attachments/1534053228315148308/1540941743413792898/0822.mp3?ex=6a8bc954&is=6a8a77d4&hm=b0815f938fb605044f764c553b58db394048bf35961b43946ee0e5e67736f505&"
+      type="audio/mpeg"
+    />
+  </audio>
+
   <figure class="floating-photo" aria-label="A floating photo">
     <img
       src="https://cdn.discordapp.com/attachments/1532366098308272148/1540740279357800589/IMG_1250.jpg?ex=6a8b0db4&is=6a89bc34&hm=a20ce97054a4a6b1e3588bac1600ef0f8392fba2c28ee57ee19794bf0264c503"
@@ -427,8 +434,10 @@
       const surprise = document.getElementById("surprise");
       const mainButton = document.querySelector(".main-button");
       const introButton = document.querySelector(".main-message-link");
+      const backgroundMusic = document.getElementById("background-music");
 
       surprise.textContent = "Yêu em mãi mãi. 💕";
+      backgroundMusic.play().catch(() => {});
       mainButton.classList.add("fade-out");
 
       setTimeout(() => {
