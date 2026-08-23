@@ -117,7 +117,7 @@
       visibility: hidden;
       opacity: 0;
       animation-play-state: paused;
-      transition: opacity 0.8s ease;
+      transition: opacity 1s ease;
     }
 
     .floating-photo.visible {
@@ -127,7 +127,7 @@
     }
 
     .floating-photo.entering {
-      animation: photoRise 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: photoRise 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
     .floating-photo img {
@@ -307,19 +307,24 @@
       }
 
       50% {
-        transform: translateY(-18px) rotate(calc(var(--photo-rotation) - 6deg));
+        transform: translateY(-10px) rotate(calc(var(--photo-rotation) - 3deg));
       }
     }
 
     @keyframes photoRise {
-      from {
+      0% {
         opacity: 0;
-        transform: translateY(110vh) rotate(var(--photo-rotation));
+        transform: translateY(35vh) rotate(var(--photo-rotation)) scale(0.97);
       }
 
-      to {
+      75% {
         opacity: 1;
-        transform: translateY(0) rotate(var(--photo-rotation));
+        transform: translateY(-4px) rotate(var(--photo-rotation)) scale(1);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0) rotate(var(--photo-rotation)) scale(1);
       }
     }
 
@@ -473,7 +478,7 @@
         photo.classList.add("visible", "entering");
         setTimeout(() => {
           photo.classList.remove("entering");
-        }, 1200);
+        }, 1800);
       });
 
       setTimeout(() => {
