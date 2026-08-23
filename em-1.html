@@ -111,6 +111,7 @@
       border-radius: 18px;
       background: rgba(255, 255, 255, 0.75);
       box-shadow: 0 16px 35px rgba(126, 42, 76, 0.25);
+      --photo-rotation: 9deg;
       transform: rotate(9deg);
       animation: photoFloat 5s ease-in-out infinite;
       visibility: hidden;
@@ -123,6 +124,10 @@
       visibility: visible;
       opacity: 1;
       animation-play-state: running;
+    }
+
+    .floating-photo.entering {
+      animation: photoRise 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
     .floating-photo img {
@@ -199,6 +204,7 @@
       right: auto;
       bottom: 8vh;
       left: 8vw;
+      --photo-rotation: -9deg;
       transform: rotate(-9deg);
       animation-delay: -2.5s;
     }
@@ -208,6 +214,7 @@
       right: auto;
       bottom: auto;
       left: 9vw;
+      --photo-rotation: -6deg;
       transform: rotate(-6deg);
       animation-delay: -1.2s;
     }
@@ -296,11 +303,23 @@
 
     @keyframes photoFloat {
       0%, 100% {
-        transform: translateY(0) rotate(9deg);
+        transform: translateY(0) rotate(var(--photo-rotation));
       }
 
       50% {
-        transform: translateY(-18px) rotate(3deg);
+        transform: translateY(-18px) rotate(calc(var(--photo-rotation) - 6deg));
+      }
+    }
+
+    @keyframes photoRise {
+      from {
+        opacity: 0;
+        transform: translateY(110vh) rotate(var(--photo-rotation));
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) rotate(var(--photo-rotation));
       }
     }
 
@@ -451,7 +470,10 @@
       surprise.textContent = "Yêu em mãi mãi. 💕";
       mainButton.classList.add("fade-out");
       document.querySelectorAll(".floating-photo").forEach((photo) => {
-        photo.classList.add("visible");
+        photo.classList.add("visible", "entering");
+        setTimeout(() => {
+          photo.classList.remove("entering");
+        }, 1200);
       });
 
       setTimeout(() => {
